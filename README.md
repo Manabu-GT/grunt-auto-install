@@ -42,7 +42,7 @@ grunt.initConfig({
 Type: `String`
 Default value: `''` - runs in current directory
 
-The working directory to run 'npm install' and 'bower install'.
+The working directory to run 'npm install' and 'bower install'. (relative path)
 
 #### stdout
 Type: `Boolean`
@@ -80,6 +80,7 @@ grunt.initConfig({
 grunt.initConfig({
   auto_install: {
     options: {
+      cwd: './customPath/',
       stderr: false,
       failOnError: false
     }
