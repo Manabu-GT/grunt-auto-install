@@ -38,6 +38,10 @@
     "grunt": "~0.4.0"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "grunt",
+    "npm",
+    "bower",
+    "install"
   ]
 }
