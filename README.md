@@ -1,4 +1,4 @@
-# grunt-auto-install
+# grunt-auto-install [![Build Status](https://travis-ci.org/Manabu-GT/grunt-auto-install.png?branch=master)](https://travis-ci.org/Manabu-GT/grunt-auto-install)
 
 > Install and update npm and bower dependencies.
 > It looks for 'package.json' and 'bower.json' files, and runs 'npm install' and 'bower install' respectively only if they exist.
