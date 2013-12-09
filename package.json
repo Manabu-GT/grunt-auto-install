@@ -1,7 +1,7 @@
 {
   "name": "grunt-auto-install",
   "description": "Install and update npm & bower dependencies.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/Manabu-GT/grunt-auto-install",
   "author": {
     "name": "Manabu-GT",
