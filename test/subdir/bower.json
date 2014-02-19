@@ -1,0 +1,7 @@
+{
+  "name": "grunt-auto-install-test",
+  "private": true,
+  "dependencies": {
+    "jquery": "*"
+  }
+}

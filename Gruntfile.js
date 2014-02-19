@@ -25,7 +25,11 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp']
+      tests: ['tmp', 
+              'test/bower_components', 
+              'test/node_modules', 
+              'test/subdir/bower_components',
+              'test/subdir/node_modules']
     },
 
     // Unit tests.

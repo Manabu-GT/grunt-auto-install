@@ -5,18 +5,19 @@
  * Copyright (c) 2013 Manabu-GT
  * Licensed under the MIT license.
  */
+var async = require('async');
+var exec = require('child_process').exec;
+var path = require('path');
 
 'use strict';
 
 module.exports = function(grunt) {
 
-  // Libs
-  var async = require('async');
-  var exec = require('child_process').exec;
+  grunt.registerMultiTask('auto_install', 'Install and update npm & bower dependencies.', function() {
 
-  grunt.registerTask('auto_install', 'Install and update npm & bower dependencies.', function() {
+    var done = this.async();
 
-    var TASK_INFO = [
+    var TASKS = [
       {
         name: 'npm',
         cmd: 'npm install',
@@ -31,16 +32,18 @@ module.exports = function(grunt) {
 
     // Merge task-specific options with these defaults.
     var options = this.options({
-      cwd: '',
+      cwd: process.cwd(),
       stdout: true,
       stderr: true,
       failOnError: true
     });
 
+    var cwd = path.resolve(process.cwd(), options.cwd);
+
     var runCmd = function(item, callback) {
-      grunt.log.writeln('running "' + item + '"...');
-      var cmd = exec(item, {cwd: options.cwd}, function(error, stdout, stderr) {
-        if(error) {
+      grunt.log.writeln('running ' + item + '...');
+      var cmd = exec(item, {cwd: cwd}, function(error, stdout, stderr) {
+        if (error) {
           callback(error);
           return;
         }
@@ -48,7 +51,7 @@ module.exports = function(grunt) {
         callback();
       });
 
-      if(options.stdout || grunt.option('verbose')) {
+      if (options.stdout || grunt.option('verbose')) {
         cmd.stdout.pipe(process.stdout);
       }
       if (options.stderr || grunt.option('verbose')) {
@@ -63,14 +66,13 @@ module.exports = function(grunt) {
     };
 
     var installTasks = [];
-    var done = this.async();
 
-    for(var i = 0; i < TASK_INFO.length; i++) {
-      var task = TASK_INFO[i];
-      if(grunt.file.exists(options.cwd + task.package_meta_data)) {
+    TASKS.forEach(function(task) {
+      var file = path.join(options.cwd, task.package_meta_data);
+      if (grunt.file.exists(file)) {
         installTasks.push(asyncTask(task.cmd));
       }
-    }
+    })
 
     async.series(installTasks,
       function(error, results) {
