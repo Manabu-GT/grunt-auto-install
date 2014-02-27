@@ -2,17 +2,17 @@
 
 module.exports = function (grunt) {
   grunt.initConfig({
-  	auto_install: {
+    auto_install: {
       subdir: {
         options: {
           cwd: './subdir' 
         },
         data: 'stuff'
       },
-  		local: {
+      local: {
 
-  		}
-  	}
+      }
+    }
   });
 
   grunt.loadTasks('../tasks');

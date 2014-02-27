@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
   // Libs
   var async = require('async');
+
   var exec = require('child_process').exec;
   var path = require('path');
 

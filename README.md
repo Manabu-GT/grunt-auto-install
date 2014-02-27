@@ -26,11 +26,14 @@ In your project's Gruntfile, add a section named `auto_install` to the data obje
 ```js
 grunt.initConfig({
   auto_install: {
-    options: {
-      cwd: '',
-      stdout: true,
-      stderr: true,
-      failOnError: true
+    local: {},
+    subdir: {
+      options: {
+        cwd: 'subdir',
+        stdout: true,
+        stderr: true,
+        failOnError: true
+      }
     }
   },
 });
@@ -69,7 +72,7 @@ Instructs the auto-install task to fail the grunt run if an error occurs during 
 ```js
 grunt.initConfig({
   auto_install: {
-    options: {}
+    local: {}
   },
 });
 ```
@@ -79,10 +82,12 @@ grunt.initConfig({
 ```js
 grunt.initConfig({
   auto_install: {
-    options: {
-      cwd: './customPath/',
-      stderr: false,
-      failOnError: false
+    subdir: {
+      options: {
+        cwd: 'subdir',
+        stderr: false,
+        failOnError: false
+      }
     }
   },
 });
@@ -92,5 +97,6 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+ * 2014-02-27   v0.2.0   Converted to MultiTask
  * 2013-12-09   v0.1.1   Updated package.json
  * 2013-12-07   v0.1.0   Initial Release
