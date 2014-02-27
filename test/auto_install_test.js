@@ -35,12 +35,10 @@ exports.auto_install = {
   },
   npm: function(test) {
 
-    test.expect(4);
+    test.expect(2);
 
     var nodeDir = path.join(__dirname, 'node_modules/requirejs');
     var nodeSubdir = path.join(__subdir, 'node_modules/requirejs');
-    var bowerDir = path.join(__dirname, 'bower_components/jquery');
-    var bowerSubdir = path.join(__subdir, 'bower_components/jquery');
 
     grunt.util.spawn({
       grunt: true,
@@ -68,8 +66,42 @@ exports.auto_install = {
         test.ok(directoryExists(nodeDir), nodeDir + ' exists.');
         test.ok(directoryExists(nodeSubdir), nodeSubdir + ' exists.');
 
+        test.done();
+      });
+    });
+  },
+  bower: function(test) {
+    test.expect(2);
+
+    var bowerDir = path.join(__dirname, 'bower_components/jquery');
+    var bowerSubdir = path.join(__subdir, 'bower_components/jquery');
+
+    grunt.util.spawn({
+      grunt: true,
+      opts: {cwd: __dirname},
+      args: [
+        'auto_install:local',
+        '--verbose'
+      ]
+    }, function (error, result, code) {
+      if(error) {
+        throw error;
+      }
+      grunt.util.spawn({
+        grunt: true,
+        opts: {cwd: __subdir},
+        args: [
+          'auto_install:subdir',
+          '--verbose'
+        ]
+      }, function (error, result, code) {
+        if(error) {
+          throw error;
+        }
+
         test.ok(directoryExists(bowerDir), bowerDir + ' exists.');
         test.ok(directoryExists(bowerSubdir), bowerSubdir + ' exists.');
+
         test.done();
       });
     });

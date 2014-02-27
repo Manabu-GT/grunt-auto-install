@@ -5,13 +5,15 @@
  * Copyright (c) 2013 Manabu-GT
  * Licensed under the MIT license.
  */
-var async = require('async');
-var exec = require('child_process').exec;
-var path = require('path');
 
 'use strict';
 
 module.exports = function(grunt) {
+
+  // Libs
+  var async = require('async');
+  var exec = require('child_process').exec;
+  var path = require('path');
 
   grunt.registerMultiTask('auto_install', 'Install and update npm & bower dependencies.', function() {
 
@@ -72,7 +74,7 @@ module.exports = function(grunt) {
       if (grunt.file.exists(file)) {
         installTasks.push(asyncTask(task.cmd));
       }
-    })
+    });
 
     async.series(installTasks,
       function(error, results) {
