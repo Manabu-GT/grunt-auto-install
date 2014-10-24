@@ -65,6 +65,12 @@ Default value: `true`
 
 Instructs the auto-install task to fail the grunt run if an error occurs during the task execution.
 
+#### production
+Type: `Boolean`
+Default value: `false`
+
+The option to run npm/bower install with --production flag so that npm/bower will not install modules listed in devDependencies.
+
 ### Usage Examples
 
 #### Default Options
@@ -97,6 +103,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+ * 2014-10-25   v0.2.1   Added production option
  * 2014-02-27   v0.2.0   Converted to MultiTask
  * 2013-12-09   v0.1.1   Updated package.json
  * 2013-12-07   v0.1.0   Initial Release
