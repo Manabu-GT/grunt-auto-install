@@ -10,7 +10,9 @@ module.exports = function (grunt) {
         data: 'stuff'
       },
       local: {
-
+        options: {
+          production: true
+        }
       }
     }
   });

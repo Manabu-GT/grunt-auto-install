@@ -1,7 +1,7 @@
 {
   "name": "grunt-auto-install",
   "description": "Install and update npm & bower dependencies.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/Manabu-GT/grunt-auto-install",
   "author": {
     "name": "Manabu-GT",
@@ -22,7 +22,7 @@
   ],
   "main": "Gruntfile.js",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "scripts": {
     "test": "grunt test"
@@ -33,7 +33,7 @@
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.3.1",
     "grunt": "~0.4.0"
   },
   "peerDependencies": {
