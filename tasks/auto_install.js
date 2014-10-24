@@ -45,6 +45,9 @@ module.exports = function(grunt) {
 
     var runCmd = function(item, callback) {
       grunt.log.writeln('running ' + item + '...');
+      if (options.production) {
+        item += " --production";
+      }
       var cmd = exec(item, {cwd: cwd}, function(error, stdout, stderr) {
         if (error) {
           callback(error);
