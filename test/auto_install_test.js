@@ -35,10 +35,13 @@ exports.auto_install = {
   },
   npm: function(test) {
 
-    test.expect(2);
+    test.expect(4);
 
-    var nodeDir = path.join(__dirname, 'node_modules/requirejs');
-    var nodeSubdir = path.join(__subdir, 'node_modules/requirejs');
+    var nodeDirMoment = path.join(__dirname, 'node_modules/moment');
+    var nodeSubDirMoment = path.join(__subdir, 'node_modules/moment');
+
+    var nodeDirRequireJS = path.join(__dirname, 'node_modules/requirejs');
+    var nodeSubDirRequireJS= path.join(__subdir, 'node_modules/requirejs');
 
     grunt.util.spawn({
       grunt: true,
@@ -48,9 +51,15 @@ exports.auto_install = {
         '--verbose'
       ]
     }, function (error, result, code) {
-      if(error) {
+      if (error) {
         throw error;
       }
+
+      test.ok(directoryExists(nodeDirMoment), nodeDirMoment + ' should exist.');
+      test.ok(!directoryExists(nodeDirRequireJS), nodeDirRequireJS + ' should not exist.');
+
+      grunt.file.delete(nodeDirMoment);
+
       grunt.util.spawn({
         grunt: true,
         opts: {cwd: __subdir},
@@ -63,18 +72,21 @@ exports.auto_install = {
           throw error;
         }
 
-        test.ok(directoryExists(nodeDir), nodeDir + ' exists.');
-        test.ok(directoryExists(nodeSubdir), nodeSubdir + ' exists.');
+        test.ok(directoryExists(nodeSubDirMoment), nodeSubDirMoment + ' should exist.');
+        test.ok(directoryExists(nodeSubDirRequireJS), nodeSubDirRequireJS + ' should exist.');
 
         test.done();
       });
     });
   },
   bower: function(test) {
-    test.expect(2);
+    test.expect(4);
 
-    var bowerDir = path.join(__dirname, 'bower_components/jquery');
-    var bowerSubdir = path.join(__subdir, 'bower_components/jquery');
+    var bowerDirJquery = path.join(__dirname, 'bower_components/jquery');
+    var bowerSubDirJquery = path.join(__subdir, 'bower_components/jquery');
+
+    var bowerDirMocks = path.join(__dirname, 'bower_components/angular-mocks');
+    var bowerSubDirMocks = path.join(__subdir, 'bower_components/angular-mocks');
 
     grunt.util.spawn({
       grunt: true,
@@ -84,9 +96,15 @@ exports.auto_install = {
         '--verbose'
       ]
     }, function (error, result, code) {
-      if(error) {
+      if (error) {
         throw error;
       }
+
+      test.ok(directoryExists(bowerDirJquery), bowerDirJquery + ' should exist.');
+      test.ok(!directoryExists(bowerDirMocks), bowerDirMocks + ' should not exist.');
+
+      grunt.file.delete(bowerDirJquery);
+
       grunt.util.spawn({
         grunt: true,
         opts: {cwd: __subdir},
@@ -99,8 +117,8 @@ exports.auto_install = {
           throw error;
         }
 
-        test.ok(directoryExists(bowerDir), bowerDir + ' exists.');
-        test.ok(directoryExists(bowerSubdir), bowerSubdir + ' exists.');
+        test.ok(directoryExists(bowerSubDirJquery), bowerDirJquery + ' should exist.');
+        test.ok(directoryExists(bowerSubDirMocks), bowerSubDirMocks + ' should exist.');
 
         test.done();
       });
