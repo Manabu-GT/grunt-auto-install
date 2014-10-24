@@ -103,7 +103,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
- * 2014-10-25   v0.2.1   Added production option
+ * 2014-10-25   v0.2.2   Added production option
  * 2014-02-27   v0.2.0   Converted to MultiTask
  * 2013-12-09   v0.1.1   Updated package.json
  * 2013-12-07   v0.1.0   Initial Release
