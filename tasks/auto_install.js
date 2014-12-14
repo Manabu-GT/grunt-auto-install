@@ -38,7 +38,9 @@ module.exports = function(grunt) {
       cwd: process.cwd(),
       stdout: true,
       stderr: true,
-      failOnError: true
+      failOnError: true,
+      npm: true,
+      bower: true
     });
 
     var cwd = path.resolve(process.cwd(), options.cwd);
@@ -75,7 +77,7 @@ module.exports = function(grunt) {
 
     TASKS.forEach(function(task) {
       var file = path.join(options.cwd, task.package_meta_data);
-      if (grunt.file.exists(file)) {
+      if (grunt.file.exists(file) && options[task.name]) {
         installTasks.push(asyncTask(task.cmd));
       }
     });
