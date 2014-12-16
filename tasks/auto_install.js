@@ -50,6 +50,9 @@ module.exports = function(grunt) {
       if (options.production) {
         item += ' --production';
       }
+      if (options.allowroot) {
+        item += ' --allow-root';
+      }
       var cmd = exec(item, {cwd: cwd}, function(error, stdout, stderr) {
         if (error) {
           callback(error);
