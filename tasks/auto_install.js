@@ -1,8 +1,10 @@
 /*
  * grunt-auto-install
+ *
  * https://github.com/Manabu-GT/grunt-auto-install
  *
- * Copyright (c) 2013 Manabu-GT
+ * Copyright (c) 2013 Manabu Shimobe
+ *
  * Licensed under the MIT license.
  */
 
@@ -47,12 +49,6 @@ module.exports = function(grunt) {
 
     var runCmd = function(item, callback) {
       grunt.log.writeln('running ' + item + '...');
-      if (options.production) {
-        item += ' --production';
-      }
-      if (options.allowroot) {
-        item += ' --allow-root';
-      }
       var cmd = exec(item, {cwd: cwd}, function(error, stdout, stderr) {
         if (error) {
           callback(error);
@@ -80,8 +76,9 @@ module.exports = function(grunt) {
 
     TASKS.forEach(function(task) {
       var file = path.join(options.cwd, task.package_meta_data);
-      if (grunt.file.exists(file) && options[task.name]) {
-        installTasks.push(asyncTask(task.cmd));
+      if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
+        var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
+        installTasks.push(asyncTask(taskCmd));
       }
     });
 

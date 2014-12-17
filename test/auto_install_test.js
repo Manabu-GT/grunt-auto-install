@@ -55,10 +55,8 @@ exports.auto_install = {
         throw error;
       }
 
-      test.ok(directoryExists(nodeDirMoment), nodeDirMoment + ' should exist.');
+      test.ok(!directoryExists(nodeDirMoment), nodeDirMoment + ' should not exist.');
       test.ok(!directoryExists(nodeDirRequireJS), nodeDirRequireJS + ' should not exist.');
-
-      grunt.file.delete(nodeDirMoment);
 
       grunt.util.spawn({
         grunt: true,

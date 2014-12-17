@@ -2,6 +2,7 @@
 
 > Install and update npm and bower dependencies.
 > It looks for 'package.json' and 'bower.json' files, and runs 'npm install' and 'bower install' respectively only if they exist.
+> (You can also explicitly disable npm/bower tasks even if those files exist.)
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
@@ -32,7 +33,8 @@ grunt.initConfig({
         cwd: 'subdir',
         stdout: true,
         stderr: true,
-        failOnError: true
+        failOnError: true,
+        npm: '--production'
       }
     }
   },
@@ -71,6 +73,35 @@ Default value: `false`
 
 The option to run npm/bower install with --production flag so that npm/bower will not install modules listed in devDependencies.
 
+#### disableNpm
+Type: `Boolean`
+Default value: `false`
+
+The option to disable `npm install` so that it will not run even if there is a package.json file present.
+
+#### disableBower
+Type: `Boolean`
+Default value: `false`
+
+he option to disable `bower install` so that it will not run even if there is a bower.json file present.
+
+#### npm
+Type: `Boolean` `String`
+Default value: `true`
+
+Set to `false` to turn off `npm install` so that it will not run even if there is a `package.json` file present.
+If a `String` is specified, it is passed as an install option flags to `npm install`.
+For example, `--production` flag could be used not to install modules listed in devDependencies.
+
+#### bower
+Type: `Boolean` `String`
+Default value: `true`
+
+Set to `false` to turn off `bower install` so that it will not run even if there is a `bower.json` file present.
+If a `String` is specified, it is passed as an install option flags to `bower install`.
+For example, `--production` flag could be used not to install modules listed in devDependencies and
+`--allow-root` flag could be used so all is done using a root user.
+
 ### Usage Examples
 
 #### Default Options
@@ -92,7 +123,9 @@ grunt.initConfig({
       options: {
         cwd: 'subdir',
         stderr: false,
-        failOnError: false
+        failOnError: false,
+        npm: false,
+        bower: '--allow-root'
       }
     }
   },
@@ -103,6 +136,8 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+ * 2014-12-18   v0.2.3   Added npm and bower options
+                         Removed production option
  * 2014-10-25   v0.2.2   Added production option
  * 2014-02-27   v0.2.0   Converted to MultiTask
  * 2013-12-09   v0.1.1   Updated package.json

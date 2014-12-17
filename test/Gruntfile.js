@@ -5,13 +5,15 @@ module.exports = function (grunt) {
     auto_install: {
       subdir: {
         options: {
-          cwd: './subdir' 
+          cwd: './subdir',
+          npm: ''
         },
         data: 'stuff'
       },
       local: {
         options: {
-          production: true
+          npm: false,
+          bower: '--production'
         }
       }
     }
