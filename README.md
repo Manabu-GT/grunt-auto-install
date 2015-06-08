@@ -118,7 +118,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
- * 2015-06-09   v0.2.4   Disabled maxBuffer when running command to avoid the maxBuffer exceeded error
+ * 2015-06-09   v0.2.4   Disabled maxBuffer to avoid the maxBuffer exceeded error
  * 2014-12-18   v0.2.3   Added npm and bower options, and removed production option
  * 2014-10-25   v0.2.2   Added production option
  * 2014-02-27   v0.2.0   Converted to MultiTask
