@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 
     var runCmd = function(item, callback) {
       grunt.log.writeln('running ' + item + '...');
-      var cmd = exec(item, {cwd: cwd}, function(error, stdout, stderr) {
+      var cmd = exec(item, {cwd: cwd, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
           callback(error);
           return;
