@@ -57,7 +57,6 @@ module.exports = function(grunt) {
      * matches the pattern, and doesn't match the exclussion pattern
      **/
     var walk = function(dir) {
-      grunt.log.writeln('## Enter walk');
       var results = [];
 
       var list = fs.readdirSync(dir);
@@ -110,7 +109,6 @@ module.exports = function(grunt) {
 
         if(options.recursive) {
           var files = walk(options.cwd);
-          grunt.log.writeln('## Exit walk');
           files.forEach(function(file) {
             installTasks.push(asyncTask(file, taskCmd))
           });
