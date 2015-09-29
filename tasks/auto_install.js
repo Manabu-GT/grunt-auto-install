@@ -17,6 +17,7 @@ module.exports = function(grunt) {
 
   var exec = require('child_process').exec;
   var path = require('path');
+  var fs = require('fs');
 
   grunt.registerMultiTask('auto_install', 'Install and update npm & bower dependencies.', function() {
 
@@ -42,14 +43,42 @@ module.exports = function(grunt) {
       stderr: true,
       failOnError: true,
       npm: true,
-      bower: true
+      bower: true,
+      recursive: false,
+      match: '.*', // Always true
+      exclude: '/(?=a)b/' // Always false
     });
 
     var cwd = path.resolve(process.cwd(), options.cwd);
 
-    var runCmd = function(item, callback) {
-      grunt.log.writeln('running ' + item + '...');
-      var cmd = exec(item, {cwd: cwd, maxBuffer: Infinity}, function(error, stdout, stderr) {
+    /**
+     * Syncronously walks the directory
+     * and returns an array of every subdirectory that
+     * matches the pattern, and doesn't match the exclussion pattern
+     **/
+    var walk = function(dir) {
+      grunt.log.writeln('## Enter walk');
+      var results = [];
+
+      var list = fs.readdirSync(dir);
+
+      list.forEach(function(file) {
+        if(file.match(options.match) != null && file.match(options.exclude) == null) {
+          file = path.resolve(dir, file);
+          var stat = fs.statSync(file);
+
+          if (stat && stat.isDirectory()) {
+            results = results.concat(file).concat(walk(file));
+          }
+        }
+      });
+
+      return results;
+    };
+
+    var runCmd = function(file, item, callback) {
+      grunt.log.writeln('running ' + item + ' on ' + file + '...');
+      var cmd = exec(item, {cwd: file, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
           callback(error);
           return;
@@ -66,9 +95,9 @@ module.exports = function(grunt) {
       }
     };
 
-    var asyncTask = function(taskCmd) {
+    var asyncTask = function(file, taskCmd) {
       return function(callback) {
-        runCmd(taskCmd, callback);
+        runCmd(file, taskCmd, callback);
       };
     };
 
@@ -78,7 +107,16 @@ module.exports = function(grunt) {
       var file = path.join(options.cwd, task.package_meta_data);
       if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
         var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
-        installTasks.push(asyncTask(taskCmd));
+
+        if(options.recursive) {
+          var files = walk(options.cwd);
+          grunt.log.writeln('## Exit walk');
+          files.forEach(function(file) {
+            installTasks.push(asyncTask(file, taskCmd))
+          });
+        } else {
+          installTasks.push(asyncTask(options.cwd, taskCmd))
+        };
       }
     });
 
