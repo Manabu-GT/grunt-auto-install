@@ -54,7 +54,7 @@ module.exports = function(grunt) {
     /**
      * Syncronously walks the directory
      * and returns an array of every subdirectory that
-     * matches the pattern, and doesn't match the exclussion pattern
+     * matches the patterns, and doesn't match any exclussion pattern
      **/
     var walk = function(dir) {
       var results = [];
@@ -62,7 +62,16 @@ module.exports = function(grunt) {
       var list = fs.readdirSync(dir);
 
       list.forEach(function(file) {
-        if(file.match(options.match) != null && file.match(options.exclude) == null) {
+        // Check for every given pattern, regardless of wether it is an array or a string
+        var matchesAllPatterns = [].concat(options.match).every(function(regexp) {
+          return file.match(regexp) != null;
+        });
+
+        var matchesSomeExclude = [].concat(options.exclude).every(function(regexp) {
+          return file.match(regexp) != null;
+        });
+
+        if(matchesAllPatterns && !matchesSomeExclude) {
           file = path.resolve(dir, file);
           var stat = fs.statSync(file);
 
@@ -108,7 +117,9 @@ module.exports = function(grunt) {
         var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
 
         if(options.recursive) {
-          var files = walk(options.cwd);
+          // Add the root dir
+          var files = walk(options.cwd).concat(options.cwd);
+
           files.forEach(function(file) {
             installTasks.push(asyncTask(file, taskCmd))
           });
