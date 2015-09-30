@@ -90,6 +90,7 @@ module.exports = function(grunt) {
       var cmd = exec(item, {cwd: file, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
           grunt.log.writeln('\x1b[31mx\x1b[0m');
+          callback(error);
           return;
         }
         grunt.log.writeln('\x1b[32m✔\x1b[0m');
