@@ -31,7 +31,9 @@ module.exports = function(grunt) {
               'test/subdir/bower_components',
               'test/subdir/node_modules',
               'test/subdir/*/bower_components',
-              'test/subdir/*/node_modules']
+              'test/subdir/*/node_modules',
+              'test/subdir/*/*/bower_components',
+              'test/subdir/*/*/node_modules']
     },
 
     // Unit tests.
