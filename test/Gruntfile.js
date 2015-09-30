@@ -15,10 +15,18 @@ module.exports = function (grunt) {
           npm: false,
           bower: '--production'
         }
+      },
+      recursive: {
+        options: {
+          cwd: './subdir',
+          npm: '',
+          recursive: true,
+          match: '.*match.*',
+          exclude: '.*exclude.*'
+        }
       }
     }
   });
 
   grunt.loadTasks('../tasks');
-  
 };
