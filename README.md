@@ -84,6 +84,25 @@ If a `String` is specified, it is passed as an install option flags to `bower in
 For example, `--production` flag could be used not to install modules listed in devDependencies and
 `--allow-root` flag could be used so all is done using a root user.
 
+#### recursive
+Type: `Boolean`
+Default value: `false`
+
+Set to `true` to turn on the recursive installation.
+Will walk the entire directory tree and install dependencies for any package contained in a subdirectory
+
+#### match
+Type: `String` `[String]`
+Default value: `'.*'`
+
+When recursive is set to `true`, will perform the installation only on the directories that match a regular expression, or one in an array of regular expressions.
+
+#### exclude
+Type: `String` `[String]`
+Default value: `'/(?=a)b/'`
+
+When recursive is set to `true`, will ignore the directories (and it's sub directories) that match with a regular expression, or one in an array of regular expressions.
+
 ### Usage Examples
 
 #### Default Options
@@ -112,6 +131,21 @@ grunt.initConfig({
     }
   },
 });
+```
+
+#### Recursive Option
+You will most likely not use the `match` option
+
+```js
+auto_install: {
+  grunt.initConfig({
+    local: {},
+    options: {
+      recursive: true,
+      exclude: ['.git', 'node_modules', 'bower_components']
+    }
+  }
+}
 ```
 
 ## Contributing
