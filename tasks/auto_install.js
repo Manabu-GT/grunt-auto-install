@@ -89,6 +89,7 @@ module.exports = function(grunt) {
       grunt.log.writeln('running ' + item + ' on ' + file + '...');
       var cmd = exec(item, {cwd: file, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
+            grunt.log.writeln('error -> '+ error);
           callback(error);
           return;
         }
@@ -113,21 +114,20 @@ module.exports = function(grunt) {
     var installTasks = [];
 
     TASKS.forEach(function(task) {
-      var file = path.join(options.cwd, task.package_meta_data);
-      if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
-        var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
+      var dirs = [options.cwd];
 
-        if(options.recursive) {
-          // Add the root dir
-          var files = walk(options.cwd).concat(options.cwd);
-
-          files.forEach(function(file) {
-            installTasks.push(asyncTask(file, taskCmd))
-          });
-        } else {
-          installTasks.push(asyncTask(options.cwd, taskCmd))
-        };
+      if(options.recursive) {
+        dirs = dirs.concat(walk(options.cwd));
       }
+
+      dirs.forEach(function(dir) {
+        var file = path.join(dir, task.package_meta_data);
+
+        if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
+          var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
+          installTasks.push(asyncTask(dir, taskCmd))
+        }
+      });
     });
 
     async.series(installTasks,
