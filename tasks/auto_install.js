@@ -63,20 +63,21 @@ module.exports = function(grunt) {
 
       list.forEach(function(file) {
         // Check for every given pattern, regardless of wether it is an array or a string
-        var matchesAllPatterns = [].concat(options.match).every(function(regexp) {
-          return file.match(regexp) != null;
-        });
-
         var matchesSomeExclude = [].concat(options.exclude).every(function(regexp) {
           return file.match(regexp) != null;
         });
 
-        if(matchesAllPatterns && !matchesSomeExclude) {
+        if(!matchesSomeExclude) {
+          var matchesAllPatterns = [].concat(options.match).every(function(regexp) {
+            return file.match(regexp) != null;
+          });
+
           file = path.resolve(dir, file);
           var stat = fs.statSync(file);
 
           if (stat && stat.isDirectory()) {
-            results = results.concat(file).concat(walk(file));
+            if(matchesAllPatterns) results = results.concat(file);
+            results = results.concat(walk(file));
           }
         }
       });
