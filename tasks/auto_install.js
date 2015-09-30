@@ -86,14 +86,13 @@ module.exports = function(grunt) {
     };
 
     var runCmd = function(file, item, callback) {
-      grunt.log.writeln('running ' + item + ' on ' + file + '...');
+      grunt.log.write('running ' + item + ' on ' + file + '...');
       var cmd = exec(item, {cwd: file, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
-            grunt.log.writeln('error -> '+ error);
-          callback(error);
+          grunt.log.writeln('\x1b[31mx\x1b[0m');
           return;
         }
-        grunt.log.writeln('done.');
+        grunt.log.writeln('\x1b[32m✔\x1b[0m');
         callback();
       });
 
