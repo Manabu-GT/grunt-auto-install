@@ -63,12 +63,12 @@ module.exports = function(grunt) {
 
       list.forEach(function(file) {
         // Check for every given pattern, regardless of wether it is an array or a string
-        var matchesSomeExclude = [].concat(options.exclude).every(function(regexp) {
+        var matchesSomeExclude = [].concat(options.exclude).some(function(regexp) {
           return file.match(regexp) != null;
         });
 
         if(!matchesSomeExclude) {
-          var matchesAllPatterns = [].concat(options.match).every(function(regexp) {
+          var matchesSomePattern = [].concat(options.match).some(function(regexp) {
             return file.match(regexp) != null;
           });
 
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
           var stat = fs.statSync(file);
 
           if (stat && stat.isDirectory()) {
-            if(matchesAllPatterns) results = results.concat(file);
+            if(matchesSomePattern) results = results.concat(file);
             results = results.concat(walk(file));
           }
         }
