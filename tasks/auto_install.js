@@ -17,6 +17,7 @@ module.exports = function(grunt) {
 
   var exec = require('child_process').exec;
   var path = require('path');
+  var fs = require('fs');
 
   grunt.registerMultiTask('auto_install', 'Install and update npm & bower dependencies.', function() {
 
@@ -42,19 +43,57 @@ module.exports = function(grunt) {
       stderr: true,
       failOnError: true,
       npm: true,
-      bower: true
+      bower: true,
+      recursive: false,
+      match: '.*', // Always true
+      exclude: '/(?=a)b/' // Always false
     });
 
     var cwd = path.resolve(process.cwd(), options.cwd);
 
-    var runCmd = function(item, callback) {
-      grunt.log.writeln('running ' + item + '...');
-      var cmd = exec(item, {cwd: cwd, maxBuffer: Infinity}, function(error, stdout, stderr) {
+    /**
+     * Syncronously walks the directory
+     * and returns an array of every subdirectory that
+     * matches the patterns, and doesn't match any exclussion pattern
+     **/
+    var walk = function(dir) {
+      var results = [];
+
+      var list = fs.readdirSync(dir);
+
+      list.forEach(function(file) {
+        // Check for every given pattern, regardless of wether it is an array or a string
+        var matchesSomeExclude = [].concat(options.exclude).some(function(regexp) {
+          return file.match(regexp) != null;
+        });
+
+        if(!matchesSomeExclude) {
+          var matchesSomePattern = [].concat(options.match).some(function(regexp) {
+            return file.match(regexp) != null;
+          });
+
+          file = path.resolve(dir, file);
+          var stat = fs.statSync(file);
+
+          if (stat && stat.isDirectory()) {
+            if(matchesSomePattern) results = results.concat(file);
+            results = results.concat(walk(file));
+          }
+        }
+      });
+
+      return results;
+    };
+
+    var runCmd = function(file, item, callback) {
+      grunt.log.write('running ' + item + ' on ' + file + '...');
+      var cmd = exec(item, {cwd: file, maxBuffer: Infinity}, function(error, stdout, stderr) {
         if (error) {
+          grunt.log.writeln('\x1b[31mx\x1b[0m');
           callback(error);
           return;
         }
-        grunt.log.writeln('done.');
+        grunt.log.writeln('\x1b[32m✔\x1b[0m');
         callback();
       });
 
@@ -66,20 +105,29 @@ module.exports = function(grunt) {
       }
     };
 
-    var asyncTask = function(taskCmd) {
+    var asyncTask = function(file, taskCmd) {
       return function(callback) {
-        runCmd(taskCmd, callback);
+        runCmd(file, taskCmd, callback);
       };
     };
 
     var installTasks = [];
 
     TASKS.forEach(function(task) {
-      var file = path.join(options.cwd, task.package_meta_data);
-      if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
-        var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
-        installTasks.push(asyncTask(taskCmd));
+      var dirs = [options.cwd];
+
+      if(options.recursive) {
+        dirs = dirs.concat(walk(options.cwd));
       }
+
+      dirs.forEach(function(dir) {
+        var file = path.join(dir, task.package_meta_data);
+
+        if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
+          var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
+          installTasks.push(asyncTask(dir, taskCmd))
+        }
+      });
     });
 
     async.series(installTasks,
