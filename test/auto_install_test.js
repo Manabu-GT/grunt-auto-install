@@ -25,12 +25,24 @@ exports.auto_install = {
   tearDown: function(callback) {
     var modulesDir = path.join(__dirname, 'node_modules');
     var modulesSubDir = path.join(__subdir, 'node_modules');
+    var modulesMatchSubDir = path.join(__subdir, 'matchsubdir/node_modules');
+    var modulesMatchSubSubDir = path.join(__subdir, 'subsubdir/matchsubdir/node_modules');
+
     var bowerDir = path.join(__dirname, 'bower_components');
     var bowerSubDir = path.join(__subdir, 'bower_components');
+    var bowerMatchSubDir = path.join(__subdir, 'matchsubdir/bower_components');
+    var bowerMatchSubSubDir = path.join(__subdir, 'subsubdir/matchsubdir/bower_components');
+
     grunt.file.delete(modulesDir);
     grunt.file.delete(modulesSubDir);
+    grunt.file.delete(modulesMatchSubDir);
+    grunt.file.delete(modulesMatchSubSubDir);
+
     grunt.file.delete(bowerDir);
     grunt.file.delete(bowerSubDir);
+    grunt.file.delete(bowerMatchSubDir);
+    grunt.file.delete(bowerMatchSubSubDir);
+
     callback();
   },
   npm: function(test) {
