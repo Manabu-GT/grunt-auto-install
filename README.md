@@ -152,6 +152,7 @@ auto_install: {
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+ * 2015-10-11   v0.3.0   Added recursive options
  * 2015-06-09   v0.2.4   Disabled maxBuffer to avoid the maxBuffer exceeded error
  * 2014-12-18   v0.2.3   Added npm and bower options, and removed production option
  * 2014-10-25   v0.2.2   Added production option
