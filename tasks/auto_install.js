@@ -52,9 +52,9 @@ module.exports = function(grunt) {
     var cwd = path.resolve(process.cwd(), options.cwd);
 
     /**
-     * Syncronously walks the directory
+     * Synchronously walks the directory
      * and returns an array of every subdirectory that
-     * matches the patterns, and doesn't match any exclussion pattern
+     * matches the patterns, and doesn't match any exclude pattern
      **/
     var walk = function(dir) {
       var results = [];
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
       var list = fs.readdirSync(dir);
 
       list.forEach(function(file) {
-        // Check for every given pattern, regardless of wether it is an array or a string
+        // Check for every given pattern, regardless of whether it is an array or a string
         var matchesSomeExclude = [].concat(options.exclude).some(function(regexp) {
           return file.match(regexp) != null;
         });
@@ -76,7 +76,9 @@ module.exports = function(grunt) {
           var stat = fs.statSync(file);
 
           if (stat && stat.isDirectory()) {
-            if(matchesSomePattern) results = results.concat(file);
+            if(matchesSomePattern) {
+              results = results.concat(file);
+            }
             results = results.concat(walk(file));
           }
         }
@@ -125,7 +127,7 @@ module.exports = function(grunt) {
 
         if (grunt.file.exists(file) && (options[task.name] === true || typeof options[task.name] === 'string')) {
           var taskCmd = (typeof options[task.name] === 'string') ? task.cmd + ' ' + options[task.name]: task.cmd;
-          installTasks.push(asyncTask(dir, taskCmd))
+          installTasks.push(asyncTask(dir, taskCmd));
         }
       });
     });
