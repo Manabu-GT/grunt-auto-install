@@ -33,6 +33,11 @@ module.exports = function(grunt) {
         name: 'bower',
         cmd: 'bower install',
         package_meta_data: 'bower.json'
+      },
+      {
+        name: 'yarn',
+        cmd: 'yarn install',
+        package_meta_data: 'package`.json'
       }
     ];
 
@@ -44,6 +49,7 @@ module.exports = function(grunt) {
       failOnError: true,
       npm: true,
       bower: true,
+      yarn: true,
       recursive: false,
       match: '.*', // Always true
       exclude: '/(?=a)b/' // Always false
