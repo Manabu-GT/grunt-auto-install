@@ -49,6 +49,7 @@ module.exports = function(grunt) {
       failOnError: true,
       npm: true,
       bower: true,
+      yarn: true,
       recursive: false,
       match: '.*', // Always true
       exclude: '/(?=a)b/' // Always false
