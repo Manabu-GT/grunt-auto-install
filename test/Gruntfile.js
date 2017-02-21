@@ -20,6 +20,7 @@ module.exports = function (grunt) {
         options: {
           cwd: './subdir',
           npm: '',
+          yarn: '',
           recursive: true,
           match: '.*match.*',
           exclude: '.*exclude.*'
