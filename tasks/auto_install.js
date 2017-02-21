@@ -33,6 +33,11 @@ module.exports = function(grunt) {
         name: 'bower',
         cmd: 'bower install',
         package_meta_data: 'bower.json'
+      },
+      {
+        name: 'yarn',
+        cmd: 'yarn install',
+        package_meta_data: 'package`.json'
       }
     ];
 
